@@ -1,13 +1,24 @@
 package main
 
-import "github.com/gofiber/fiber"
+import (
+	"./handlers"
+	"./configs"
+	"./repository"
+	"./services"
+	"github.com/gofiber/fiber"
+)
 
-func main(){
-	app := fiber.New()
+func main() {
+	appRoute := fiber.New()
+	configs.ConnectDB()
 
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.SendString("Hello, World 👋!")
-    })
+	dbClient := configs.GetCollection(configs.DB, "todos")
+	TodoRepositoryDb := repository.NewTodoRepositoryDb(dbClient)
 
-    app.Listen(":8000")
+	td := handlers.TodoHandler{Service: services.NewTodoService(TodoRepositoryDb)}
+
+	appRoute.Post("/api/todo", td.CreateTodo)
+	appRoute.Get("/api/todos", td.GetAllTodo)
+	appRoute.Delete("/api/todo/:id", td.DeleteTodo)
+	appRoute.Listen(":3000")
 }

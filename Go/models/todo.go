@@ -8,6 +8,7 @@ import (
 type Todo struct {
 	Id       primitive.ObjectID 				`json:"id,omitempty"`
 	Title    string             				`json:"title,omitempty"`
+	State    bool             					`json:"state,omitempty"`
 	Content  string             				`json:"content,omitempty"`
 	Priority string             				`json:"priority,omitempty"`
 	UserId   primitive.ObjectID                 `json:"userId,omitempty"`
