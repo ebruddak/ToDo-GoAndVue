@@ -17,6 +17,11 @@ type UserHandler struct {
 
 func (h UserHandler) CreateUser(c *fiber.Ctx) error {
 	var user models.User
+	var data map[string]string
+
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
 
 	result, err := h.Service.UserInsert(user)
 
