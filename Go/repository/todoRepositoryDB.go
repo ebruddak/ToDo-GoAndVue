@@ -3,7 +3,7 @@ package repository
 import (
 	"../models"
 	"context"
-	"errors"
+	// "errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,7 +29,7 @@ func (t TodoRepositoryDB) Insert(todo models.Todo) (bool, error) {
 	result, err := t.TodoCollection.InsertOne(ctx, todo)
 
 	if result.InsertedID == nil || err != nil {
-		errors.New("failed add")
+		// errors.New("failed add")
 		return false, err
 	}
 	return true, nil
