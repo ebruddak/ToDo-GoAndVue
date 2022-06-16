@@ -1,11 +1,16 @@
 <template>
   <NavBar /> 
- <div class="container-fluid">
+ <div class="container">
   <div class="row">
-    <MenuBar />
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="col-md-12">
+   <div class="col-md-3 col-lg-2">
+      <MenuBar />
+   </div>
+    <main class="col-md-8 col-lg-9 px-md-4">
      <router-view />
     </main>
+  </div>
+   
   </div>
 </div> 
 

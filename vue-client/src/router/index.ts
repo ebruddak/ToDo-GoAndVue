@@ -4,6 +4,9 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
  import RegisterUser from '@/pages/RegisterUser.vue';
  import LoginUser from '@/pages/LoginUser.vue';
  import AdminWrapper from '@/pages/AdminWrapper.vue';
+ import TodoGroups from '@/pages/group/TodoGroups.vue';
+ import GroupCreate from '@/pages/group/GroupCreate.vue';
+ import GroupEdit from '@/pages/group/GroupEdit.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -15,6 +18,9 @@ const routes: Array<RouteRecordRaw> = [
         children:[
             {path: '', component: NewNotes},
             {path: '/NewNotes', component: NewNotes},
+            {path: '/Groups', component: TodoGroups},
+            {path: '/Groups/Create', component: GroupCreate},
+            {path: '/Groups/:id/edit', component: GroupEdit},
         ]
      }
 
