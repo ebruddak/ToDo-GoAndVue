@@ -50,9 +50,10 @@ func (t DefaultUserService) Login(user dtos.LoginDTO) (string, error) {
 }
 func (t DefaultUserService) User(_id string) (*models.User, error) {
 	result, err := t.Repo.User(_id)
-
-	return &result, errors.New(err.Error())
-
+	if err != nil {
+		return &result, errors.New(err.Error())
+	}
+	return &result, nil
 }
 
 func NewUserService(Repo repository.UserRepository) DefaultUserService {

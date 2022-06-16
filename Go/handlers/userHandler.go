@@ -70,7 +70,7 @@ func (h UserHandler) User(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
-func Logout(c *fiber.Ctx) error {
+func (h UserHandler) Logout(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    "",

@@ -34,6 +34,7 @@ func main() {
 	appRoute.Post("/api/register", us.CreateUser)
 	appRoute.Post("/api/login", us.Login)
 	appRoute.Get("/api/user", us.User)
+	appRoute.Post("/api/logout", us.Logout)
 
 	appRoute.Listen(":3000")
 }

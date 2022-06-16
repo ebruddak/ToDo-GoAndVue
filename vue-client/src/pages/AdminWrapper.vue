@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts" >
-import {onMounted} from 'vue';
+import {onMounted, TrackOpTypes} from 'vue';
 import NavBar from '@/components/NavBar.vue';
 import MenuBar from '@/components/MenuBar.vue';
-
+import {useRouter} from "vue-router"
 import axios from 'axios';
 // import * as c3 from 'c3';
 export default {
@@ -24,36 +24,16 @@ export default {
     NavBar,MenuBar
   },
   setup() {
+    const router= useRouter();
      onMounted(async () => {
-    //   const chart = c3.generate({
-    //     bindto: '#chart',
-    //     data: {
-    //       x: 'x',
-    //       columns: [
-    //         ['x'],
-    //         ['Sales']
-    //       ],
-    //       types: {
-    //         Sales: 'bar'
-    //       }
-    //     },
-    //     axis: {
-    //       x: {
-    //         type: 'timeseries',
-    //         tick: {
-    //           format: '%Y-%m-%d'
-    //         }
-    //       }
-    //     }
-    //   });
-    //   const response = await axios.get('chart');
-    //   const records = response.data.data;
-    //   chart.load({
-    //     columns: [
-    //       ['x', ...records.map(r => r.date)],
-    //       ['Sales', ...records.map(r => r.sum)]
-    //     ]
-    //   });
+      try{
+      const {data} =await axios.get('user')
+      console.log(data)
+      } catch (e){
+        await router.push('/login')
+      }
+     
+    
      });
   }
 }

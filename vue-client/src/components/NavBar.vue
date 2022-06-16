@@ -4,35 +4,48 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+      <a class="p-2 text-white text-decoration-none" href="#">{{username}}</a>
+      <router-link to="/login" class="nav-link px-3" @click="logout">Sign out</router-link>
     </div>
   </div>
 </header>
 </template>
 
 <script lang="ts">
-// import {computed} from 'vue';
-// import {useRouter} from "vue-router";
+ import {computed,onMounted,ref} from 'vue';
+ import {useRouter} from "vue-router";
 // import {useStore} from "vuex";
-// import axios from 'axios';
+ import axios from 'axios';
 export default {
   name: "NavBar",
+  
   setup() {
+        const router = useRouter();
+    const username=ref('')
+     onMounted(async () => {
+      const {data} =await axios.get('user')
+       username.value=data.username + "test" ;   
+     });
+      const logout = async () => {
+       await axios.post('logout', {});
+            router.push('/login')
+
+     }
+   return {
+    username,logout
+  }
+  }
+ 
     // const router = useRouter();
     // const store = useStore();
     // const user = computed(() => store.state.User.user);
-    // const logout = async () => {
-    //   await axios.post('logout', {});
-      
-    //   router.push('/login')
-    // }
+   
     // return {
     //   user,
     //   logout
     // }
   }
-}
+
 </script>

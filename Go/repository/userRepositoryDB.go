@@ -71,7 +71,7 @@ func (t UserRepositoryDB) Login(user dtos.LoginDTO) (models.User, error) {
 		return models.User{}, errors.New("User Not Found")
 	}
 	if err := result.ComparePassword(user.Password); err != nil {
-		return models.User{}, errors.New("Incorrect Pasword")
+		return result, errors.New("Incorrect Pasword")
 	}
 
 	return result, nil
