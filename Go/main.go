@@ -31,8 +31,9 @@ func main() {
 	appRoute.Get("/api/todos", td.GetAllTodo)
 	appRoute.Delete("/api/todo/:id", td.DeleteTodo)
 
-	appRoute.Post("/api/user", us.CreateUser)
+	appRoute.Post("/api/register", us.CreateUser)
 	appRoute.Post("/api/login", us.Login)
+	appRoute.Get("/api/user", us.User)
 
 	appRoute.Listen(":3000")
 }

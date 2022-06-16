@@ -1,12 +1,12 @@
 package services
 
 import (
+	"errors"
+
+	"../dtos"
 	"../models"
 	"../repository"
-	"../dtos"
 	"../utils"
-	"strconv"
-	"errors"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -15,18 +15,22 @@ type DefaultUserService struct {
 }
 
 type UserService interface {
-	UserInsert(user models.User) (*dtos.TodoDTO, error)	
-	Login(user dtos.LoginDTO) (string, error)	
+	UserInsert(user dtos.RegisterDTO) (*dtos.TodoDTO, error)
+	Login(user dtos.LoginDTO) (string, error)
+	User(_id string) (*models.User, error)
 }
 
-func (t DefaultUserService) UserInsert(user models.User) (*dtos.TodoDTO, error) {
+func (t DefaultUserService) UserInsert(user dtos.RegisterDTO) (*dtos.TodoDTO, error) {
 	var res dtos.TodoDTO
+	var newUser models.User
 	if len(user.UserName) <= 3 {
 		res.Status = false
 		return &res, nil
 	}
-	user.SetPassword("1234")
-	result, err := t.Repo.Insert(user)
+	newUser.SetPassword(string(user.Password))
+	newUser.Email = user.Email
+	newUser.UserName = user.UserName
+	result, err := t.Repo.Insert(newUser)
 
 	if err != nil || result == false {
 		res.Status = false
@@ -36,14 +40,20 @@ func (t DefaultUserService) UserInsert(user models.User) (*dtos.TodoDTO, error) 
 	return &res, nil
 }
 
-func (t DefaultUserService) Login(user dtos.LoginDTO) (string , error) {
+func (t DefaultUserService) Login(user dtos.LoginDTO) (string, error) {
 	result, err := t.Repo.Login(user)
-    if err == nil {
-		token, er := utils.GenerateJwt(strconv.Itoa(int(result.Id)))
-		return token,er}
-	return "", errors.New("failed") 				
+	if err == nil {
+		token, er := utils.GenerateJwt(result.UserName)
+		return token, er
+	}
+	return "", errors.New("failed")
 }
+func (t DefaultUserService) User(_id string) (*models.User, error) {
+	result, err := t.Repo.User(_id)
 
+	return &result, errors.New(err.Error())
+
+}
 
 func NewUserService(Repo repository.UserRepository) DefaultUserService {
 	return DefaultUserService{Repo: Repo}

@@ -1,16 +1,17 @@
 package models
 
 import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
-	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Id          uint   							`json:"id,omitempty"`
-	UserName    string             				`json:"userName,omitempty"`
-	EMail       string             				`json:"eMail,omitempty"`
-	Password    []byte             				`json:"password,omitempty"`
+	Id       primitive.ObjectID `json:"id,omitempty" bson:"_id"`
+	UserName string             `json:"userName,omitempty" bson:"username"`
+	Email    string             `json:"eMail,omitempty" bson:"email"`
+	Password []byte             `json:"password,omitempty" bson:"password"`
 }
+
 func (user *User) SetPassword(password string) {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
 	user.Password = hashedPassword

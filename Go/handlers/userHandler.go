@@ -2,14 +2,14 @@ package handlers
 
 import (
 	"../dtos"
-	"../models"
 	"../services"
 	"github.com/gofiber/fiber"
 
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
-	// "../utils"
 	"time"
+
+	"../utils"
 )
 
 type UserHandler struct {
@@ -17,7 +17,7 @@ type UserHandler struct {
 }
 
 func (h UserHandler) CreateUser(c *fiber.Ctx) error {
-	var user models.User
+	var user dtos.RegisterDTO
 
 	if err := c.BodyParser(&user); err != nil {
 		return err
@@ -38,7 +38,9 @@ func (h UserHandler) Login(c *fiber.Ctx) error {
 	result, err := h.Service.Login(user)
 
 	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.JSON(fiber.Map{
+			"message": err.Error(),
+		})
 	} else {
 		cookie := fiber.Cookie{
 			Name:     "jwt",
@@ -57,19 +59,16 @@ func (h UserHandler) Login(c *fiber.Ctx) error {
 	// return c.Status(http.StatusCreated).JSON(result)
 }
 
-// func User(c *fiber.Ctx) error {
-// 	cookie := c.Cookies("jwt")
+func (h UserHandler) User(c *fiber.Ctx) error {
+	cookie := c.Cookies("jwt")
 
-// 	id, _ := utils.ParseJwt(cookie)
+	id, _ := utils.ParseJwt(cookie)
 
-// 	var user models.User
-
-// 	// result, err := h.Service.User(id)
-
-// 	database.DB.Where("id = ?", id).First(&user)
-
-// 	return c.JSON(user)
-// }
+	result, err := h.Service.User(id)
+	if err != nil {
+	}
+	return c.JSON(result)
+}
 
 func Logout(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
