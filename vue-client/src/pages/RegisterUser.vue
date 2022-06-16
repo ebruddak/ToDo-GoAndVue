@@ -1,6 +1,6 @@
 <template>
   <form class="form-signin" @submit.prevent="submit">
-    <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Todo App Register</h1>
 
     <label for="username" class="sr-only">Username</label>
     <input type="text" id="username" class="form-control" placeholder="Username" v-model="username" required >

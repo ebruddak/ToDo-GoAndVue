@@ -1,17 +1,56 @@
 package handlers
 
 import (
+	"net/http"
+
 	"../models"
 	"../services"
 	"github.com/gofiber/fiber"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"net/http"
 )
 
 type TodoHandler struct {
 	Service services.TodoService
 }
 
+func (h TodoHandler) GetTodo(c *fiber.Ctx) error {
+	query := c.Params("id")
+	cnv, _ := primitive.ObjectIDFromHex(query)
+	result, err := h.Service.GetTodo(cnv)
+
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(err.Error())
+	}
+
+	return c.Status(http.StatusOK).JSON(result)
+}
+func (h TodoHandler) UpdateTodo(c *fiber.Ctx) error {
+	var todo models.Todo
+
+	if err := c.BodyParser(&todo); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(err.Error())
+	}
+
+	result, err := h.Service.TodoUpdate(todo)
+
+	if err != nil || result == false {
+		return err
+	}
+
+	return c.Status(http.StatusCreated).JSON(result)
+}
+func (h TodoHandler) Complete(c *fiber.Ctx) error {
+
+	query := c.Params("id")
+	cnv, _ := primitive.ObjectIDFromHex(query)
+	result, err := h.Service.Complete(cnv)
+
+	if err != nil || result == false {
+		return err
+	}
+
+	return c.Status(http.StatusCreated).JSON(result)
+}
 func (h TodoHandler) CreateTodo(c *fiber.Ctx) error {
 	var todo models.Todo
 
@@ -37,7 +76,15 @@ func (h TodoHandler) GetAllTodo(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusOK).JSON(result)
 }
+func (h TodoHandler) GetAllComplatedTodo(c *fiber.Ctx) error {
+	result, err := h.Service.TodoGetAllCompated()
 
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(err.Error())
+	}
+
+	return c.Status(http.StatusOK).JSON(result)
+}
 func (h TodoHandler) DeleteTodo(c *fiber.Ctx) error {
 	query := c.Params("id")
 	cnv, _ := primitive.ObjectIDFromHex(query)

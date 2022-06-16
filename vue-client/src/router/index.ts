@@ -7,20 +7,29 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
  import TodoGroups from '@/pages/group/TodoGroups.vue';
  import GroupCreate from '@/pages/group/GroupCreate.vue';
  import GroupEdit from '@/pages/group/GroupEdit.vue';
+ import NewTodos from '@/pages/todo/NewTodos.vue';
+ import Completed from '@/pages/todo/CompletedTodos.vue';
+ import TodoCreate from '@/pages/todo/TodoCreate.vue';
+ import TodoEdit from '@/pages/todo/TodoEdit.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
     {path: '/Login', component: LoginUser},
+    // {path: '', component: LoginUser},
      {path: '/Register', component: RegisterUser},
      {
         path:'',
         component: AdminWrapper,
         children:[
-            {path: '', component: NewNotes},
-            {path: '/NewNotes', component: NewNotes},
             {path: '/Groups', component: TodoGroups},
             {path: '/Groups/Create', component: GroupCreate},
             {path: '/Groups/:id/edit', component: GroupEdit},
+            {path: '/NewTodos', component: NewTodos},
+            {path: '/Todo/Create', component: TodoCreate},
+            {path: '/Todo/:id/edit', component: TodoEdit},
+            {path: '/CompetedTodos', component: Completed},
+
+
         ]
      }
 

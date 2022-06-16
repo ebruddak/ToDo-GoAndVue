@@ -1,14 +1,17 @@
 package repository
 
 import (
-	"../models"
 	"context"
+
+	"../models"
+
 	// "errors"
+	"log"
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"log"
-	"time"
 )
 
 type TodoRepositoryDB struct {
@@ -18,7 +21,11 @@ type TodoRepositoryDB struct {
 type TodoRepository interface {
 	Insert(todo models.Todo) (bool, error)
 	GetAll() ([]models.Todo, error)
+	GetAllComplated() ([]models.Todo, error)
 	Delete(id primitive.ObjectID) (bool, error)
+	Get(id primitive.ObjectID) (models.Todo, error)
+	Update(todo models.Todo) (bool, error)
+	Complete(id primitive.ObjectID) (bool, error)
 }
 
 func (t TodoRepositoryDB) Insert(todo models.Todo) (bool, error) {
@@ -35,6 +42,51 @@ func (t TodoRepositoryDB) Insert(todo models.Todo) (bool, error) {
 	return true, nil
 }
 
+func (t TodoRepositoryDB) Update(todo models.Todo) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	id := primitive.ObjectID(todo.Id)
+	filter := bson.M{"id": bson.M{"$eq": id}}
+	update := bson.M{"$set": bson.M{"title": todo.Title, "content": todo.Content, "priority": todo.Priority, "groupId": todo.GroupId}}
+	result, err := t.TodoCollection.UpdateOne(ctx, filter, update)
+	if err != nil || result == nil {
+		return false, err
+	}
+
+	return true, nil
+}
+func (t TodoRepositoryDB) Complete(id primitive.ObjectID) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	filter := bson.M{"id": bson.M{"$eq": id}}
+	update := bson.M{"$set": bson.M{"status": false}}
+	result, err := t.TodoCollection.UpdateOne(ctx, filter, update)
+	if err != nil || result == nil {
+		return false, err
+	}
+	return true, nil
+}
+func (t TodoRepositoryDB) Get(id primitive.ObjectID) (models.Todo, error) {
+	var todo models.Todo
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	result, err := t.TodoCollection.Find(ctx, bson.M{"id": id})
+
+	if err != nil {
+		log.Fatalln(err)
+		return todo, err
+	}
+
+	for result.Next(ctx) {
+		if err := result.Decode(&todo); err != nil {
+			log.Fatalln(err)
+			return todo, err
+		}
+	}
+	return todo, nil
+}
 func (t TodoRepositoryDB) GetAll() ([]models.Todo, error) {
 	var todo models.Todo
 	var todos []models.Todo
@@ -58,7 +110,29 @@ func (t TodoRepositoryDB) GetAll() ([]models.Todo, error) {
 	}
 	return todos, nil
 }
+func (t TodoRepositoryDB) GetAllComplated() ([]models.Todo, error) {
+	var todo models.Todo
+	var todos []models.Todo
 
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result, err := t.TodoCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		log.Fatalln(err)
+		return nil, err
+	}
+
+	for result.Next(ctx) {
+		if err := result.Decode(&todo); err != nil {
+			log.Fatalln(err)
+			return nil, err
+		}
+		todos = append(todos, todo)
+	}
+	return todos, nil
+}
 func (t TodoRepositoryDB) Delete(id primitive.ObjectID) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

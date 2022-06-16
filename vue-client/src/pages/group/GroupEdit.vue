@@ -16,7 +16,7 @@ import {useRoute, useRouter} from "vue-router";
 import {Group} from "@/classes/group";
 
 export default {
-  name: "GroupCreate",
+  name: "GroupEdit",
   setup() {
     const name = ref(''); 
     const userId = ref(''); 
