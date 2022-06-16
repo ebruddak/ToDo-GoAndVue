@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"../models"
 	"../dtos"
+	"../models"
 	"../services"
 	"github.com/gofiber/fiber"
+
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 	// "../utils"
@@ -17,9 +18,8 @@ type UserHandler struct {
 
 func (h UserHandler) CreateUser(c *fiber.Ctx) error {
 	var user models.User
-	var data map[string]string
 
-	if err := c.BodyParser(&data); err != nil {
+	if err := c.BodyParser(&user); err != nil {
 		return err
 	}
 
@@ -32,7 +32,6 @@ func (h UserHandler) CreateUser(c *fiber.Ctx) error {
 	return c.Status(http.StatusCreated).JSON(result)
 }
 
-
 func (h UserHandler) Login(c *fiber.Ctx) error {
 	var user dtos.LoginDTO
 
@@ -40,16 +39,16 @@ func (h UserHandler) Login(c *fiber.Ctx) error {
 
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
-	}else{
+	} else {
 		cookie := fiber.Cookie{
 			Name:     "jwt",
 			Value:    result,
 			Expires:  time.Now().Add(time.Hour * 24),
 			HTTPOnly: true,
 		}
-	
+
 		c.Cookie(&cookie)
-	
+
 		return c.JSON(fiber.Map{
 			"message": "success",
 		})
@@ -58,15 +57,12 @@ func (h UserHandler) Login(c *fiber.Ctx) error {
 	// return c.Status(http.StatusCreated).JSON(result)
 }
 
-
-
 // func User(c *fiber.Ctx) error {
 // 	cookie := c.Cookies("jwt")
 
 // 	id, _ := utils.ParseJwt(cookie)
 
 // 	var user models.User
-
 
 // 	// result, err := h.Service.User(id)
 
