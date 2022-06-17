@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" >
-import {ref} from 'vue';
+import {ref,onMounted} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 export default {
@@ -18,17 +18,23 @@ export default {
   setup() {
     const name = ref(''); 
     const router = useRouter();
-   
+    
+    const userId = ref(''); 
+    onMounted(async () => {
+      const {data} =await axios.get('user')
+      console.log(data)
+       userId.value=data.id ;   
+     });
     const submit = async () => {
       await axios.post('group', {
         name: name.value,
-        userId: ''
+        userId: userId.value
       });
       await router.push('/Groups');
     }
     return {
       name,
-      submit
+      submit,userId
     }
   }
 }

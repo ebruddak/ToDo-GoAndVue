@@ -42,11 +42,12 @@ func (t DefaultUserService) UserInsert(user dtos.RegisterDTO) (*dtos.TodoDTO, er
 
 func (t DefaultUserService) Login(user dtos.LoginDTO) (string, error) {
 	result, err := t.Repo.Login(user)
-	if err == nil {
-		token, er := utils.GenerateJwt(result.UserName)
-		return token, er
+
+	if err != nil {
+		return "", errors.New(err.Error())
 	}
-	return "", errors.New("failed")
+	token, er := utils.GenerateJwt(string(result.Id.String()))
+	return token, er
 }
 func (t DefaultUserService) User(_id string) (*models.User, error) {
 	result, err := t.Repo.User(_id)

@@ -55,14 +55,17 @@ export default {
          todos.value = todos.value.filter((e: Entity) => e.id !== id );
        }
     }
+     const userId = ref(''); 
+ 
     onMounted(async ()=>{
-         const {data} = await axios.get(`complated`);
-         debugger
+         userId.value= await (await axios.get('user')).data.id
+         const {data} = await axios.get(`complated/${userId.value}`);
            todos.value = data;
     })
     return {
       todos, 
-       del
+       del,
+       userId
     }
   }
 }

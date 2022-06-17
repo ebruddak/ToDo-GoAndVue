@@ -68,7 +68,9 @@ func (h TodoHandler) CreateTodo(c *fiber.Ctx) error {
 }
 
 func (h TodoHandler) GetAllTodo(c *fiber.Ctx) error {
-	result, err := h.Service.TodoGetAll()
+	query := c.Params("id")
+	cnv, _ := primitive.ObjectIDFromHex(query)
+	result, err := h.Service.TodoGetAll(cnv)
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(err.Error())
@@ -77,7 +79,9 @@ func (h TodoHandler) GetAllTodo(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).JSON(result)
 }
 func (h TodoHandler) GetAllComplatedTodo(c *fiber.Ctx) error {
-	result, err := h.Service.TodoGetAllCompated()
+	query := c.Params("id")
+	cnv, _ := primitive.ObjectIDFromHex(query)
+	result, err := h.Service.TodoGetAllCompated(cnv)
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(err.Error())

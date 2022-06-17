@@ -27,7 +27,7 @@ export default {
 
 
    onMounted(async () => {
-     debugger
+     
       const groupCall = await axios.get(`group/${params.id}`);
       const group: Group = groupCall.data;
       name.value = group.name;
@@ -38,7 +38,8 @@ export default {
     const submit = async () => {
        await axios.put('group', {
         name: name.value,
-        id:params.id
+        id:params.id,
+        userId:userId.value
       });
       await router.push('/groups');
     }

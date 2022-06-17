@@ -13,8 +13,8 @@ type DefaultTodoService struct {
 
 type TodoService interface {
 	TodoInsert(todo models.Todo) (*dtos.TodoDTO, error)
-	TodoGetAll() ([]models.Todo, error)
-	TodoGetAllCompated() ([]models.Todo, error)
+	TodoGetAll(id primitive.ObjectID) ([]models.Todo, error)
+	TodoGetAllCompated(id primitive.ObjectID) ([]models.Todo, error)
 	TodoDelete(id primitive.ObjectID) (bool, error)
 	GetTodo(id primitive.ObjectID) (models.Todo, error)
 	Complete(id primitive.ObjectID) (bool, error)
@@ -57,15 +57,15 @@ func (t DefaultTodoService) TodoInsert(todo models.Todo) (*dtos.TodoDTO, error) 
 	return &res, nil
 }
 
-func (t DefaultTodoService) TodoGetAll() ([]models.Todo, error) {
-	result, err := t.Repo.GetAll()
+func (t DefaultTodoService) TodoGetAll(id primitive.ObjectID) ([]models.Todo, error) {
+	result, err := t.Repo.GetAll(id)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
-func (t DefaultTodoService) TodoGetAllCompated() ([]models.Todo, error) {
-	result, err := t.Repo.GetAllComplated()
+func (t DefaultTodoService) TodoGetAllCompated(id primitive.ObjectID) ([]models.Todo, error) {
+	result, err := t.Repo.GetAllComplated(id)
 	if err != nil {
 		return nil, err
 	}

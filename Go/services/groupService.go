@@ -14,7 +14,7 @@ type DefaultGroupService struct {
 type GroupService interface {
 	GroupInsert(group models.Group) (*dtos.GroupDTO, error)
 	GroupUpdate(group models.Group) (bool, error)
-	GroupGetAll() ([]models.Group, error)
+	GroupGetAll(id primitive.ObjectID) ([]models.Group, error)
 	GroupDelete(id primitive.ObjectID) (bool, error)
 	GetGroup(id primitive.ObjectID) (models.Group, error)
 }
@@ -41,8 +41,8 @@ func (t DefaultGroupService) GroupUpdate(group models.Group) (bool, error) {
 	}
 	return result, nil
 }
-func (t DefaultGroupService) GroupGetAll() ([]models.Group, error) {
-	result, err := t.Repo.GetAll()
+func (t DefaultGroupService) GroupGetAll(id primitive.ObjectID) ([]models.Group, error) {
+	result, err := t.Repo.GetAll(id)
 	if err != nil {
 		return nil, err
 	}

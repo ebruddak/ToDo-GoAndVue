@@ -16,7 +16,6 @@
 <script lang="ts">
  import {computed,onMounted,ref} from 'vue';
  import {useRouter} from "vue-router";
-// import {useStore} from "vuex";
  import axios from 'axios';
 export default {
   name: "NavBar",
@@ -26,7 +25,8 @@ export default {
     const username=ref('')
      onMounted(async () => {
       const {data} =await axios.get('user')
-       username.value=data.username + "test" ;   
+      console.log(data)
+       username.value=data.userName ;   
      });
       const logout = async () => {
        await axios.post('logout', {});
@@ -37,15 +37,7 @@ export default {
     username,logout
   }
   }
- 
-    // const router = useRouter();
-    // const store = useStore();
-    // const user = computed(() => store.state.User.user);
-   
-    // return {
-    //   user,
-    //   logout
-    // }
+
   }
 
 </script>

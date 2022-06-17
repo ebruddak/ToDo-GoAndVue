@@ -1,15 +1,13 @@
 package handlers
 
 import (
-	"../dtos"
-	"../services"
-	"github.com/gofiber/fiber"
-
-	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 	"time"
 
+	"../dtos"
+	"../services"
 	"../utils"
+	"github.com/gofiber/fiber"
 )
 
 type UserHandler struct {
@@ -34,7 +32,9 @@ func (h UserHandler) CreateUser(c *fiber.Ctx) error {
 
 func (h UserHandler) Login(c *fiber.Ctx) error {
 	var user dtos.LoginDTO
-
+	if err := c.BodyParser(&user); err != nil {
+		return err
+	}
 	result, err := h.Service.Login(user)
 
 	if err != nil {
@@ -56,17 +56,16 @@ func (h UserHandler) Login(c *fiber.Ctx) error {
 		})
 	}
 
-	// return c.Status(http.StatusCreated).JSON(result)
 }
 
 func (h UserHandler) User(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 
 	id, _ := utils.ParseJwt(cookie)
-
 	result, err := h.Service.User(id)
 	if err != nil {
 	}
+
 	return c.JSON(result)
 }
 

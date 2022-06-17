@@ -52,10 +52,12 @@ export default {
     const router = useRouter();
     const {params} = useRoute();
 
-
+  onMounted(async () => {
+      const {data} =await axios.get('user')
+       userId.value=data.id ;   
+     });
 
    onMounted(async () => {
-     debugger
       const todoCall = await axios.get(`todo/${params.id}`);
       const todo: Todo = todoCall.data;
       title.value = todo.title;
@@ -63,7 +65,7 @@ export default {
       groupId.value=todo.groupId;
       priority.value=todo.priority;
       content.value=todo.content;
-       const response = await axios.get('groups');
+       const response = await axios.get('groups/${userId.value}');
       groups.value = response.data;
 
     });
@@ -74,7 +76,8 @@ export default {
         content: content.value,
         priority: priority.value,
         groupId: groupId.value,
-        id:params.id
+        id:params.id,
+        userId:userId.value
       });
       await router.push('/NewTodos');
     }
@@ -86,7 +89,8 @@ export default {
       groupId,
       submit,
       groups,
-      priority
+      priority,
+      userId
     }
   }
 }

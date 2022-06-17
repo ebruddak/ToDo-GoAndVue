@@ -1,5 +1,5 @@
 <template>
- <h5 class="pr-2 mt-4"> New Todo Item </h5> 
+ <h5 class="pr-4 mt-4"> New Todo Item </h5> 
   <form @submit.prevent="submit">
     <div class="form-group">
       <label> Title</label>
@@ -54,12 +54,16 @@ export default {
     const router = useRouter();
    
     onMounted(async () => {
-        debugger
-      const response = await axios.get('groups');
+      const {data} =await axios.get('user')
+       userId.value=data.id ;   
+     });
+
+    onMounted(async () => {
+      const response = await axios.get('groups/${userId.value}');
       groups.value = response.data;
     });
 
-debugger
+
     const submit = async () => {
       await axios.post('todo', {
         
@@ -68,7 +72,7 @@ debugger
         priority: priority.value,
         state: true,
         groupId: groupId.value,
-        userId: ''
+        userId:userId.value
       });
 
       await router.push('/NewTodos');

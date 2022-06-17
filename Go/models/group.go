@@ -5,7 +5,7 @@ import (
 )
 
 type Group struct {
-	Id      primitive.ObjectID 				`json:"id,omitempty"`
-	Name    string             				`json:"name,omitempty"`
-	UserId  primitive.ObjectID              `json:"userId,omitempty"`
+	Id     primitive.ObjectID `json:"id,omitempty" bson:"id"`
+	Name   string             `json:"name,omitempty" bson:"name"`
+	UserId primitive.ObjectID `json:"userid,omitempty" bson:"userid"`
 }

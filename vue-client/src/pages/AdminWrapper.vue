@@ -6,9 +6,11 @@
    <div class="col-md-3 col-lg-2">
       <MenuBar />
    </div>
-    <main class="col-md-8 col-lg-9 px-md-4">
+   <div class="col-md-8 col-lg-9 px-md-4">
+    <main >
      <router-view />
     </main>
+    </div>
   </div>
    
   </div>
@@ -22,7 +24,6 @@ import NavBar from '@/components/NavBar.vue';
 import MenuBar from '@/components/MenuBar.vue';
 import {useRouter} from "vue-router"
 import axios from 'axios';
-// import * as c3 from 'c3';
 export default {
   name: "AdminWrapper",
   components:{
@@ -33,7 +34,6 @@ export default {
      onMounted(async () => {
       try{
       const {data} =await axios.get('user')
-      console.log(data)
       } catch (e){
         await router.push('/login')
       }

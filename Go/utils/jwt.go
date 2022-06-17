@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"github.com/dgrijalva/jwt-go"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 const SecretKey = "secret"
@@ -10,7 +11,7 @@ const SecretKey = "secret"
 func GenerateJwt(issuer string) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    issuer,
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), 
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 	})
 
 	return claims.SignedString([]byte(SecretKey))
@@ -18,6 +19,7 @@ func GenerateJwt(issuer string) (string, error) {
 
 func ParseJwt(cookie string) (string, error) {
 	token, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+
 		return []byte(SecretKey), nil
 	})
 
@@ -26,6 +28,6 @@ func ParseJwt(cookie string) (string, error) {
 	}
 
 	claims := token.Claims.(*jwt.StandardClaims)
-
-	return claims.Issuer, nil
+	strArr := claims.Issuer[10 : len(claims.Issuer)-2]
+	return strArr, nil
 }

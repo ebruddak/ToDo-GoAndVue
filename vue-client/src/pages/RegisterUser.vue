@@ -11,9 +11,9 @@
 
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required v-model="password">
-  
-
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    <router-link to="/login" class="btn btn-lg btn-secondary btn-block" >Login</router-link>
+
   </form>
 </template>
 
@@ -29,7 +29,6 @@ export default {
     const password = ref('');
     const router = useRouter();
     const submit = async () => {
-      debugger;
        await axios.post('register', {
         
          username: username.value,

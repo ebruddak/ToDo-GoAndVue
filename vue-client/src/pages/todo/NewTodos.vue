@@ -65,15 +65,20 @@ export default {
        }
        
      }
+
+     const userId = ref(''); 
+
+
     onMounted(async ()=>{
-         const {data} = await axios.get(`todos`);
-         debugger
+         userId.value= await (await axios.get('user')).data.id
+         const {data} = await axios.get(`todos/${userId.value}`);
            todos.value = data;
     })
     return {
       todos, 
        del,
-       comp
+       comp,
+       userId
     }
   }
 }

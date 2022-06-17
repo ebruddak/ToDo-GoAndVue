@@ -31,14 +31,14 @@ func main() {
 	gr := handlers.GroupHandler{Service: services.NewGroupService(GroupRepositoryDb)}
 
 	appRoute.Post("/api/group", gr.CreateGroup)
-	appRoute.Get("/api/groups", gr.GetAllGroup)
+	appRoute.Get("/api/groups/:id", gr.GetAllGroup)
 	appRoute.Delete("/api/group/:id", gr.DeleteGroup)
 	appRoute.Get("/api/group/:id", gr.GetGroup)
 	appRoute.Put("/api/group", gr.UpdateGroup)
 
 	appRoute.Post("/api/todo", td.CreateTodo)
-	appRoute.Get("/api/todos", td.GetAllTodo)
-	appRoute.Get("/api/complated", td.GetAllComplatedTodo)
+	appRoute.Get("/api/todos/:id", td.GetAllTodo)
+	appRoute.Get("/api/complated/:id", td.GetAllComplatedTodo)
 	appRoute.Delete("/api/todo/:id", td.DeleteTodo)
 	appRoute.Get("/api/todo/:id", td.GetTodo)
 	appRoute.Put("/api/todo", td.UpdateTodo)

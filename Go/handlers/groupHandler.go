@@ -44,7 +44,10 @@ func (h GroupHandler) UpdateGroup(c *fiber.Ctx) error {
 	return c.Status(http.StatusCreated).JSON(result)
 }
 func (h GroupHandler) GetAllGroup(c *fiber.Ctx) error {
-	result, err := h.Service.GroupGetAll()
+
+	query := c.Params("id")
+	cnv, _ := primitive.ObjectIDFromHex(query)
+	result, err := h.Service.GroupGetAll(cnv)
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(err.Error())

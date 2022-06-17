@@ -33,10 +33,11 @@
 </template>
 
 <script lang="ts">
-import {ref, onMounted, computed} from 'vue';
+import {ref, onMounted, computed,onBeforeMount} from 'vue';
 import axios from 'axios';
 import {Entity} from "@/interfaces/entity";
 import {useStore} from "vuex";
+
 export default {
   name: "TodoGroups",
   components: {
@@ -44,29 +45,24 @@ export default {
   },
   setup() {
     const groups = ref([]);
-    // const lastPage = ref(0);
-    // const store = useStore();
-    // const authenticatedUser = computed(() => store.state.User.user);
-    // const load = async (page = 1) => {
-    //   const response = await axios.get(`groups`);
-    //   groups.value = response.data.data;
-    //   lastPage.value = response.data.meta.last_page;
-    // }
+    const userId = ref([]);
+
      const del = async (id: number) => {
       if (confirm('Are you sure you want to delete this record?')) {
          await axios.delete(`group/${id}`);
          groups.value = groups.value.filter((e: Entity) => e.id !== id);
        }
     }
+
     onMounted(async ()=>{
-         const {data} = await axios.get(`groups`);
-         debugger
+         userId.value= await (await axios.get('user')).data.id
+         const {data} = await axios.get(`groups/${userId.value}`);
            groups.value = data;
     })
     return {
       groups, 
        del
-    //   load
+       
     }
   }
 }

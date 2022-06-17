@@ -5,7 +5,6 @@ import (
 
 	"../models"
 
-	// "errors"
 	"log"
 	"time"
 
@@ -20,8 +19,8 @@ type TodoRepositoryDB struct {
 
 type TodoRepository interface {
 	Insert(todo models.Todo) (bool, error)
-	GetAll() ([]models.Todo, error)
-	GetAllComplated() ([]models.Todo, error)
+	GetAll(id primitive.ObjectID) ([]models.Todo, error)
+	GetAllComplated(id primitive.ObjectID) ([]models.Todo, error)
 	Delete(id primitive.ObjectID) (bool, error)
 	Get(id primitive.ObjectID) (models.Todo, error)
 	Update(todo models.Todo) (bool, error)
@@ -36,7 +35,6 @@ func (t TodoRepositoryDB) Insert(todo models.Todo) (bool, error) {
 	result, err := t.TodoCollection.InsertOne(ctx, todo)
 
 	if result.InsertedID == nil || err != nil {
-		// errors.New("failed add")
 		return false, err
 	}
 	return true, nil
@@ -48,7 +46,7 @@ func (t TodoRepositoryDB) Update(todo models.Todo) (bool, error) {
 
 	id := primitive.ObjectID(todo.Id)
 	filter := bson.M{"id": bson.M{"$eq": id}}
-	update := bson.M{"$set": bson.M{"title": todo.Title, "content": todo.Content, "priority": todo.Priority, "groupId": todo.GroupId}}
+	update := bson.M{"$set": bson.M{"title": todo.Title, "content": todo.Content, "priority": todo.Priority, "groupId": todo.GroupId, "userId": todo.UserId}}
 	result, err := t.TodoCollection.UpdateOne(ctx, filter, update)
 	if err != nil || result == nil {
 		return false, err
@@ -87,14 +85,14 @@ func (t TodoRepositoryDB) Get(id primitive.ObjectID) (models.Todo, error) {
 	}
 	return todo, nil
 }
-func (t TodoRepositoryDB) GetAll() ([]models.Todo, error) {
+func (t TodoRepositoryDB) GetAll(id primitive.ObjectID) ([]models.Todo, error) {
 	var todo models.Todo
 	var todos []models.Todo
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	result, err := t.TodoCollection.Find(ctx, bson.M{})
+	result, err := t.TodoCollection.Find(ctx, bson.M{"userid": id, "state": true})
 
 	if err != nil {
 		log.Fatalln(err)
@@ -110,14 +108,14 @@ func (t TodoRepositoryDB) GetAll() ([]models.Todo, error) {
 	}
 	return todos, nil
 }
-func (t TodoRepositoryDB) GetAllComplated() ([]models.Todo, error) {
+func (t TodoRepositoryDB) GetAllComplated(id primitive.ObjectID) ([]models.Todo, error) {
 	var todo models.Todo
 	var todos []models.Todo
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	result, err := t.TodoCollection.Find(ctx, bson.M{})
+	result, err := t.TodoCollection.Find(ctx, bson.M{"userid": id, "state": false})
 
 	if err != nil {
 		log.Fatalln(err)
