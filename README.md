@@ -28,10 +28,42 @@ http://localhost:3000
 ```sh
 go run main.go
 ```
+##Test User
+
+```sh
+email: ebrududak@hotmail.com
+password: 1
+```
+
 ##Data Models
 
 The project consists of three models. These; are user, group and todo. Collection contents are as follows.
 
+```sh
+type Group struct {
+	Id     primitive.ObjectID `json:"id,omitempty" bson:"id"`
+	Name   string             `json:"name,omitempty" bson:"name"`
+	UserId primitive.ObjectID `json:"userid,omitempty" bson:"userid"`
+}
+type Todo struct {
+	Id       primitive.ObjectID `json:"id,omitempty"`
+	Title    string             `json:"title,omitempty"`
+	State    bool               `json:"state,omitempty"`
+	Content  string             `json:"content,omitempty"`
+	Priority string             `json:"priority,omitempty"`
+	UserId   primitive.ObjectID `json:"userId,omitempty"`
+	GroupId  primitive.ObjectID `json:"groupId,omitempty"`
+	DueDate  time.Time          `json:"dueDate,omitempty"`
+}
+type User struct {
+	Id       primitive.ObjectID `json:"id,omitempty" bson:"id"`
+	UserName string             `json:"userName,omitempty" bson:"username"`
+	Email    string             `json:"eMail,omitempty" bson:"email"`
+	Password []byte             `json:"password,omitempty" bson:"password"`
+}
+
+
+```
 ##User Case
 
 The user can log in and create a new record.<br/>
