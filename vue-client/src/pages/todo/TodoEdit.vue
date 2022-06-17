@@ -52,12 +52,9 @@ export default {
     const router = useRouter();
     const {params} = useRoute();
 
-  onMounted(async () => {
-      const {data} =await axios.get('user')
-       userId.value=data.id ;   
-     });
 
    onMounted(async () => {
+      userId.value= await (await axios.get('user')).data.id
       const todoCall = await axios.get(`todo/${params.id}`);
       const todo: Todo = todoCall.data;
       title.value = todo.title;

@@ -14,11 +14,11 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
 
 
 const routes: Array<RouteRecordRaw> = [
+    {path: '', component: LoginUser},
     {path: '/Login', component: LoginUser},
-    // {path: '', component: LoginUser},
      {path: '/Register', component: RegisterUser},
      {
-        path:'',
+        path:'/Admin',
         component: AdminWrapper,
         children:[
             {path: '/Groups', component: TodoGroups},

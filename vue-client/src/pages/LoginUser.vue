@@ -28,7 +28,7 @@ export default {
         email: email.value,
         password: password.value
       });
-      await router.push('/');
+      await router.push('/NewTodos');
     }
     return {
       email,

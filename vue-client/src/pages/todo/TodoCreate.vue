@@ -53,12 +53,9 @@ export default {
     const groups = ref([]);
     const router = useRouter();
    
+   
     onMounted(async () => {
-      const {data} =await axios.get('user')
-       userId.value=data.id ;   
-     });
-
-    onMounted(async () => {
+      userId.value= await (await axios.get('user')).data.id
       const response = await axios.get('groups/${userId.value}');
       groups.value = response.data;
     });

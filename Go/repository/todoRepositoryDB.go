@@ -58,7 +58,7 @@ func (t TodoRepositoryDB) Complete(id primitive.ObjectID) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	filter := bson.M{"id": bson.M{"$eq": id}}
-	update := bson.M{"$set": bson.M{"status": false}}
+	update := bson.M{"$set": bson.M{"state": false}}
 	result, err := t.TodoCollection.UpdateOne(ctx, filter, update)
 	if err != nil || result == nil {
 		return false, err
