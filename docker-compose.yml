@@ -1,0 +1,21 @@
+version: '3'
+services:
+  nodejs-server:
+    build:
+      context: ./Go
+      dockerfile: Dockerfile-dev
+    ports:
+      - "3000:3000"
+    container_name: go-api
+    volumes:
+       - ./api:/usr/src/app/go
+  vue-ui:
+    build:
+      context: ./vue-client
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8080:8080"
+    container_name: vue-ui
+    volumes:
+       - ./client:/usr/src/app/vue-client
+       - /usr/src/app/vue-client/node_modules
