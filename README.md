@@ -1,6 +1,6 @@
 # Golang and Vue 3 Poc: Todo List Project
 
-It is a project written using Goland in the backend and Vue 3 in the frondend. MongoDb (Online MongoDbAtlas) has been used as database. JWT is used for authorization operations. Fiber was used for write Rest API. Visual studio code was used as an IDE.
+It is a project written using Golang in the backend and Vue 3 in the frondend. MongoDb (Online MongoDbAtlas) has been used as database. JWT is used for authorization operations. Fiber was used for write Rest API. Visual studio code was used as an IDE.
 
 ##Database Connection (.env)
 
