@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"time"
 
-	"../dtos"
-	"../services"
-	"../utils"
-	"github.com/gofiber/fiber"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/dtos"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/services"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/utils"
+	"github.com/gofiber/fiber/v2"
 )
 
 type UserHandler struct {

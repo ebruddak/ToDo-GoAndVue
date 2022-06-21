@@ -1,9 +1,9 @@
 package services
 
 import (
-	"../dtos"
-	"../models"
-	"../repository"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/dtos"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/models"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/repository"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

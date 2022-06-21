@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"../models"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/models"
 
 	"log"
 	"time"

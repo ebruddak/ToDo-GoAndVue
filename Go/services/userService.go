@@ -3,10 +3,10 @@ package services
 import (
 	"errors"
 
-	"../dtos"
-	"../models"
-	"../repository"
-	"../utils"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/dtos"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/models"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/repository"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/utils"
 	// "go.mongodb.org/mongo-driver/bson/primitive"
 )
 

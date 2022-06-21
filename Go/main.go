@@ -1,12 +1,12 @@
 package main
 
 import (
-	"./configs"
-	"./handlers"
-	"./repository"
-	"./services"
-	"github.com/gofiber/fiber"
-	"github.com/gofiber/fiber/middleware/cors"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/configs"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/handlers"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/repository"
+	"github.com/ebruddak/ToDo-GoAndVue/tree/main/Go/services"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
